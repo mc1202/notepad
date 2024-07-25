@@ -1,5 +1,6 @@
 import axios from "axios";
-
+import { getCache } from '@/utils/cache';
+import { TOKEN_KEY } from '@/enums/cacheEnum';
 const axiosInstance = axios.create({
     baseURL:'http://127.0.0.1:3002',
     timeout:10000,
@@ -10,7 +11,7 @@ const axiosInstance = axios.create({
 // 请求拦截器
 axiosInstance.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('token');
+    const token = getCache(TOKEN_KEY);
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }

@@ -18,8 +18,8 @@ import {register} from '../../api/api'
         // console.log(form.getFieldValue('userName'))
         dispatch(setLoginState(true))
         register({
-            userName:form.getFieldValue('userName'),
-            userPwd:form.getFieldValue('userPwd')
+            username:form.getFieldValue('userName'),
+            password:form.getFieldValue('userPwd')
         }).then(res => {
             console.log(res)
             if (res.code == 200) {

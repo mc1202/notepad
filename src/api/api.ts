@@ -8,13 +8,14 @@ export interface rootResponse<T> {
 }
 
 export interface loginRes {
-
+  token:string,
+  userId:string
 }
 
 // 定义接口
 export interface Login {
-  userName: string;
-  userPwd: string;
+  username: string;
+  password: string;
 }
 
 // 登录

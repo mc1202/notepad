@@ -1,5 +1,5 @@
 import React,{FC,useState,useEffect,useCallback} from "react";
-import { NavLink, Route, Routes, useNavigate  } from 'react-router-dom'
+import { useNavigate  } from 'react-router-dom'
 import { useSelector, useDispatch } from "react-redux";
 import { rootState } from '../../store/index'
 const MyForm:FC = () => {
@@ -7,9 +7,9 @@ const MyForm:FC = () => {
     const navigate = useNavigate()
     useEffect(() => {
         console.log(isLogin)
-        if (!isLogin) {
-            navigate('/login')
-        }
+        // if (!isLogin) {
+        //     navigate('/login')
+        // }
     },[])
 
     const route = useCallback(() => {

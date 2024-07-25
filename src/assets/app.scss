@@ -1,0 +1,34 @@
+#root {
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
+}
+
+html,
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+input,
+textarea,
+select,
+div,
+span,
+div {
+  margin: 0;
+  font-family: OPlusSans3-Regular, PingFangSC-Regular, PingFang SC;
+}
+
+@mixin center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
