@@ -10,12 +10,28 @@ import { getCache } from '@/utils/cache'
 import { setLoginState } from "@/store/features/user";
 
 import '@/App.css';
-
-import TabBar from '@/components/TabBar';
+import '@/assets/app.scss'
+import WithTabBar from '@/components/WithTabBar';
+import { RouteConfig } from '@/router/index'
 import routes from './router'
 const AppRoutes = () => {
-  const myroutes = useRoutes(routes as RouteObject[])
-  return myroutes
+  const renderRoutes = (routes: RouteConfig[]):RouteObject[] => {
+    return routes.map((route) => {
+      const { path, element, showTabBar = false, children = [] } = route;
+
+      return {
+        path,
+        element: (
+          <WithTabBar showTabBar={showTabBar}>
+            {element}
+          </WithTabBar>
+        ),
+        children: children.length ? renderRoutes(children) : [],
+      };
+    });
+  };
+
+  return useRoutes(renderRoutes(routes));
 }
 function App() {
   const dispatch = useDispatch()
@@ -25,7 +41,6 @@ function App() {
   return (
       <> {/* 确保 div 标签正确闭合 */}
         {AppRoutes()}
-        <TabBar></TabBar>
       </>
 
 

@@ -34,9 +34,18 @@ module.exports = {
         test: /\.css$/,
         use: ['style-loader', 'css-loader'],
       },
-      {
+     {
         test: /\.scss$/,
-        use: ['style-loader', 'css-loader', 'sass-loader'],
+        use: [
+          'style-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              // modules: true, // 启用 SCSS 模块
+            },
+          },
+          'sass-loader',
+        ],
       },
       {
         test: /\.(png|jpe?g|gif|svg)$/, // 处理图片文件

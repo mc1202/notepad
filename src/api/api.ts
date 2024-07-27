@@ -11,8 +11,6 @@ export interface loginRes {
   token:string,
   userId:string
 }
-
-// 定义接口
 export interface Login {
   username: string;
   password: string;
@@ -26,4 +24,30 @@ export const login = async (loginParams:Login): Promise<rootResponse<loginRes>> 
 // 注册
 export const register = async (loginParams:Login): Promise<rootResponse<loginRes>> => {
   return await axiosInstance.post('/auth/register',loginParams);
+};
+
+//获取账单类型
+
+export interface BillTypeRes {
+  id:number,
+  name:string,
+  is_income:number
+}
+export interface BillTypeRes {
+  id:number,
+  name:string,
+  is_income:number
+}
+
+export interface BillAdd {
+  bill_type_id:number,
+  is_income:number,
+  total:number
+}
+export const getBillType = async (): Promise<rootResponse<BillTypeRes[]>> => {
+  return await axiosInstance.get('/bill/getBillType');
+};
+
+export const addBill = async (addBillParams:BillAdd): Promise<rootResponse<null>> => {
+  return await axiosInstance.post('/bill/add',addBillParams);
 };

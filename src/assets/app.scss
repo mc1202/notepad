@@ -1,3 +1,8 @@
+$cblack: #3b3736;
+$cgrey: #919191;
+$cred: #f10217;
+$cgolden: #c1aa77;
+$cyellow: #947732;
 #root {
   user-select: none;
   -webkit-touch-callout: none;
@@ -23,7 +28,6 @@ div,
 span,
 div {
   margin: 0;
-  font-family: OPlusSans3-Regular, PingFangSC-Regular, PingFang SC;
 }
 
 @mixin center {
@@ -31,4 +35,100 @@ div {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+
+.flex {
+  display: flex;
+}
+.flex1 {
+  flex: 1;
+}
+/*水平主轴 左到右*/
+.flex-row {
+  flex: 1;
+  flex-direction: row;
+}
+/*垂直主轴 上到下*/
+.flex-col {
+  flex: 1;
+  flex-direction: column;
+}
+.flex-column {
+  flex-direction: column;
+}
+/*超过宽度换行*/
+.flex-wrap {
+  flex-wrap: wrap;
+}
+/*水平居中*/
+.flex-jc-center {
+  justify-content: center;
+}
+.flex-js-betw {
+  justify-content: space-between;
+}
+.flex-js-around {
+  justify-content: space-around;
+}
+.flex-js-end {
+  justify-content: flex-end;
+}
+/*垂直居中*/
+.flex-ai-center {
+  align-items: center;
+}
+/*垂直居中*/
+.flex-ai-base {
+  align-items: baseline;
+}
+/*垂直居底*/
+.flex-ai-end {
+  align-items: flex-end;
+}
+/*垂直居顶*/
+.flex-ai-start {
+  align-items: flex-start;
+}
+/*水平垂直居中*/
+.flex-center {
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin borderBox {
+    box-sizing: border-box;
+}
+
+.pt-56 {
+    padding-top: 56px;
+    @include borderBox;
+}
+.pt-24 {
+    padding-top: 24px;
+    @include borderBox;
+}
+.pr-12 {
+  padding-right: 12px;
+  @include borderBox;
+}
+.padding-horizontal-24 {
+  padding-left: 24px;
+  padding-right: 24px;
+  @include borderBox;
+}
+
+.font-small {
+    font-size: 16px;
+    color: #947732;
+    line-height: 20px;
+}
+
+.font-medium {
+    font-size: 18px;
+    color: #343434;
+    line-height: 20px;
+}
+
+.adm-button {
+  width: 80% !important;
 }
