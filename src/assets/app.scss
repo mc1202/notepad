@@ -1,8 +1,14 @@
+
+
+
+
+
 $cblack: #3b3736;
 $cgrey: #919191;
 $cred: #f10217;
 $cgolden: #c1aa77;
 $cyellow: #947732;
+$baseColor:rgb(254, 215, 52);
 #root {
   user-select: none;
   -webkit-touch-callout: none;
@@ -117,9 +123,20 @@ div {
   @include borderBox;
 }
 
+.padding-horizontal-18 {
+  padding-left: 18px;
+  padding-right: 18px;
+  @include borderBox;
+}
+
 .font-small {
     font-size: 16px;
     color: #947732;
+    line-height: 20px;
+}
+.font-mini {
+    font-size: 12px;
+    color: $cgrey;
     line-height: 20px;
 }
 
@@ -128,7 +145,41 @@ div {
     color: #343434;
     line-height: 20px;
 }
+.font-medium-16 {
+    font-size: 16px;
+    color: #343434;
+    line-height: 18px;
+}
 
 .adm-button {
   width: 80% !important;
+}
+
+.mr-8 {
+  margin-right: 8px;
+}
+.h-22 {
+  height: 22px;
+}
+
+.h-30 {
+  height: 30px;
+}
+.mb-12 {
+  margin-bottom: 18px;
+}
+
+@for $i from 1 through 5 {
+  .border-b-#{$i} {
+    // vue下，单行和多行显示省略号需要单独处理
+    border-bottom: #{$i}px solid $cgrey;
+  }
+}
+
+.adm-tab-bar-item-active, a {
+    color: $baseColor !important;
+}
+.adm-button:not(.adm-button-default), .adm-radio.adm-radio-checked .adm-radio-icon {
+  background-color: $baseColor !important;
+  border-color: $baseColor !important;
 }

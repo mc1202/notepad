@@ -3,8 +3,8 @@
  * @param dateFormat 日期格式
  * @returns 格式化后的当前日期
  */
-export function getCurrentDate(dateFormat: string): string {
-  const now = new Date();
+export function getCurrentDate(dateFormat: string,date:unknown=null): string {
+  const now = date instanceof Date ? new Date(date) : new Date();
 
   const formatDatePart = (part: number): string => {
     return part.toString().padStart(2, '0');

@@ -44,10 +44,46 @@ export interface BillAdd {
   is_income:number,
   total:number
 }
+
+export interface Bill {
+  id:number,
+  user_id:number,
+  total:number,
+  title:string,
+  bill_type_id:number,
+  bill_type:string,
+  remarks:string | null,
+  is_income:number,
+  created_at:string,
+  updated_at:string
+}
+
+export interface BillRecord {
+  date: string;
+  day:string;
+  total_income: number;
+  total_expense: number;
+  bills: Bill[];
+}
+
+export interface BillData {
+  total_income: number;
+  total_expense: number;
+  record: BillRecord[];
+}
+
+export interface getBillParams {
+  year?:string,
+  month?:string
+}
 export const getBillType = async (): Promise<rootResponse<BillTypeRes[]>> => {
   return await axiosInstance.get('/bill/getBillType');
 };
 
 export const addBill = async (addBillParams:BillAdd): Promise<rootResponse<null>> => {
   return await axiosInstance.post('/bill/add',addBillParams);
+};
+
+export const getBill = async (getBillParams:getBillParams): Promise<rootResponse<BillData>> => {
+  return await axiosInstance.post('/bill/getBill',getBillParams);
 };
