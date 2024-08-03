@@ -69,7 +69,7 @@ const MyForm:FC = () => {
                 </div>
                 {
                     item.bills.map(bill => {
-                        return <div className="flex h-30 flex-ai-center flex-js-betw padding-horizontal-24 font-medium-16">
+                        return <div className="flex h-30 flex-ai-center flex-js-betw padding-horizontal-24 font-medium-16 border-b-0">
                             <div className="flex flex-ai-center">
                                 <div className="mr-8">{bill.bill_type}</div>
                                 <div>{bill.title}</div>

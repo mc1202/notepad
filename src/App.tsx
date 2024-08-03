@@ -9,12 +9,12 @@ import { TOKEN_KEY } from '@/enums/cacheEnum';
 import { getCache } from '@/utils/cache'
 import { setLoginState } from "@/store/features/user";
 
-import '@/App.css';
-import '@/assets/app.scss'
+import '@/App.scss';
 import WithTabBar from '@/components/WithTabBar';
 import { RouteConfig } from '@/router/index'
 import routes from './router'
 const AppRoutes = () => {
+  // console.log(process.env,'process.env')
   const renderRoutes = (routes: RouteConfig[]):RouteObject[] => {
     return routes.map((route) => {
       const { path, element, showTabBar = false, children = [] } = route;

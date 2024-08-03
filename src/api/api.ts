@@ -11,18 +11,18 @@ export interface loginRes {
   token:string,
   userId:string
 }
-export interface Login {
+export interface LoginParams {
   username: string;
   password: string;
 }
 
 // 登录
-export const login = async (loginParams:Login): Promise<rootResponse<loginRes>> => {
+export const login = async (loginParams:LoginParams): Promise<rootResponse<loginRes>> => {
   return await axiosInstance.post('/auth/login',loginParams);
 };
 
 // 注册
-export const register = async (loginParams:Login): Promise<rootResponse<loginRes>> => {
+export const register = async (loginParams:LoginParams): Promise<rootResponse<loginRes>> => {
   return await axiosInstance.post('/auth/register',loginParams);
 };
 
@@ -76,6 +76,15 @@ export interface getBillParams {
   year?:string,
   month?:string
 }
+
+export interface BillDate {
+  is_income:number,
+  dateType:string
+}
+export interface BillDateRes {
+  series:Array<number>,
+  xAxis:Array<string>,
+}
 export const getBillType = async (): Promise<rootResponse<BillTypeRes[]>> => {
   return await axiosInstance.get('/bill/getBillType');
 };
@@ -86,4 +95,8 @@ export const addBill = async (addBillParams:BillAdd): Promise<rootResponse<null>
 
 export const getBill = async (getBillParams:getBillParams): Promise<rootResponse<BillData>> => {
   return await axiosInstance.post('/bill/getBill',getBillParams);
+};
+
+export const getBillsByDateType = async (params:BillDate): Promise<rootResponse<BillDateRes>> => {
+  return await axiosInstance.post('/bill/getBillsByDateType',params);
 };

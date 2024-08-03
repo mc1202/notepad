@@ -145,9 +145,13 @@ div {
     color: #343434;
     line-height: 20px;
 }
+.font-20 {
+  font-size: 20px;
+  color: $cblack;
+}
 .font-medium-16 {
     font-size: 16px;
-    color: #343434;
+    color: $cblack;
     line-height: 18px;
 }
 
@@ -169,17 +173,36 @@ div {
   margin-bottom: 18px;
 }
 
-@for $i from 1 through 5 {
+@for $i from 0 through 5 {
   .border-b-#{$i} {
-    // vue下，单行和多行显示省略号需要单独处理
-    border-bottom: #{$i}px solid $cgrey;
+    @if $i == 0 {
+      border-bottom: 0.5px solid $cgrey;
+    } @else {
+      border-bottom: #{$i}px solid $cgrey;
+
+    }
   }
 }
+
 
 .adm-tab-bar-item-active, a {
     color: $baseColor !important;
 }
-.adm-button:not(.adm-button-default), .adm-radio.adm-radio-checked .adm-radio-icon {
+.adm-button:not(.adm-button-default), .adm-radio.adm-radio-checked .adm-radio-icon, .adm-capsule-tabs-tab-active {
   background-color: $baseColor !important;
   border-color: $baseColor !important;
+}
+
+.adm-input-element {
+  font-size: 18px !important;
+}
+.adm-capsule-tabs-tab {
+  padding: 3px 6px !important;
+  font-size: 14px !important;
+  border-radius: 0 !important;
+}
+
+.overflow-y-scroll {
+  overflow-y: scroll;
+  height: 100vh;
 }

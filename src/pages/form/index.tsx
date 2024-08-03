@@ -80,7 +80,7 @@ const MyForm:React.FC = () => {
     const save = () => {
       addBill(form).then(res => {
         Toast.show({
-          content: 'res.msg',
+          content: res.msg,
         })
         if (res.code == 200) {
           navigate(-1)

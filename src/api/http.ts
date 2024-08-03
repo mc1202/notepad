@@ -4,8 +4,9 @@ import { TOKEN_KEY } from '@/enums/cacheEnum';
 // import {} from 'react-router-dom'
 import { useSelector, useDispatch } from "react-redux";
 import { rootState } from '@/store/index'
+console.log(process.env.BASE_URL)
 const axiosInstance = axios.create({
-    baseURL:'http://127.0.0.1:3002',
+    baseURL:process.env.BASE_URL,
     timeout:10000,
     headers:{'Content-Type': 'application/json'}
 })

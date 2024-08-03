@@ -1,9 +1,7 @@
 import { Badge,Button, TabBar,Input,Form } from 'antd-mobile'
 import {
   AppOutline,
-  MessageOutline,
-  MessageFill,
-  UnorderedListOutline,
+  ReceivePaymentOutline,
   UserOutline,
 } from 'antd-mobile-icons'
 import path from 'path/posix'
@@ -21,6 +19,12 @@ export default () => {
       key: '/home',
       title: '首页',
       icon: <AppOutline />,
+      badge: Badge.dot,
+    },
+     {
+      key: '/chart',
+      title: '图表',
+      icon: <ReceivePaymentOutline />,
       badge: Badge.dot,
     },
     {

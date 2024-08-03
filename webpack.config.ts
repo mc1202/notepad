@@ -1,23 +1,46 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
+const postcssLoader = require('./postcss.config');
+const webpack = require('webpack');
+const dotenv = require('dotenv');
+const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
+
+const env = dotenv.config({ path: `.env.${process.env.NODE_ENV || 'development'}` }).parsed;
+
+const envKeys = Object.keys(env).reduce((prev, next) => {
+  prev[`process.env.${next}`] = JSON.stringify(env[next]);
+  return prev;
+}, {});
+
+const isProduction = process.env.NODE_ENV === 'production';
+
 
 module.exports = {
   entry: './src/index.tsx',
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'bundle.js',
+    filename: isProduction ? '[name].[contenthash].js' : '[name].js',
+    clean: true,
   },
   resolve: {
     extensions: ['.js', '.jsx', '.ts', '.tsx'],
     alias: {
       '@': path.resolve(__dirname, 'src'),
+      process: 'process/browser',
     },
   },
+  mode: isProduction ? 'production' : 'development',
+  devtool: isProduction ? 'source-map' : 'inline-source-map',
   module: {
     rules: [
       {
-        test: /\.(js|jsx)$/, // 处理 JS 和 JSX 文件
+        test: /\.(js|jsx)$/,
         exclude: /node_modules/,
+        include:/src/,
         use: {
           loader: 'babel-loader',
           options: {
@@ -27,6 +50,7 @@ module.exports = {
       },
       {
         test: /\.(ts|tsx)$/,
+        include:/src/,
         exclude: /node_modules/,
         use: 'ts-loader',
       },
@@ -37,14 +61,23 @@ module.exports = {
      {
         test: /\.scss$/,
         use: [
-          'style-loader',
+          isProduction ? MiniCssExtractPlugin.loader : 'style-loader',
           {
             loader: 'css-loader',
             options: {
               // modules: true, // 启用 SCSS 模块
             },
           },
+          'postcss-loader',
           'sass-loader',
+          // {
+          //   loader: 'postcss-loader',
+          //   options: {
+          //     postcssOptions: {
+          //       postcssLoader
+          //     }
+          //   }
+          // }
         ],
       },
       {
@@ -60,11 +93,34 @@ module.exports = {
       },
     ],
   },
+  optimization: {
+    minimize: true,
+    minimizer: [
+      new TerserPlugin({
+        terserOptions: {
+          format: {
+            comments: false,
+          },
+        },
+        extractComments: false,
+      }),
+      new CssMinimizerPlugin(),
+    ],
+    splitChunks: {
+      chunks: 'all',
+    },
+    runtimeChunk: 'single',
+  },
   plugins: [
     new HtmlWebpackPlugin({
       template: './public/index.html',
       favicon: './public/favicon.ico',
     }),
+    new MiniCssExtractPlugin({
+      filename: isProduction ? '[name].[contenthash].css' : '[name].css',
+    }),
+    new webpack.DefinePlugin(envKeys),
+    new NodePolyfillPlugin(),
   ],
   devServer: {
     static: {
@@ -73,5 +129,6 @@ module.exports = {
     historyApiFallback: true,
     compress: true,
     port: 9000,
+    hot:true
   },
 };
