@@ -23,6 +23,7 @@ module.exports = {
   entry: './src/index.tsx',
   output: {
     path: path.resolve(__dirname, 'dist'),
+     publicPath: '/',
     filename: isProduction ? '[name].[contenthash].js' : '[name].js',
     clean: true,
   },
@@ -110,6 +111,8 @@ module.exports = {
       chunks: 'all',
     },
     runtimeChunk: 'single',
+    providedExports: true,
+    usedExports: true,
   },
   plugins: [
     new HtmlWebpackPlugin({

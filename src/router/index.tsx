@@ -27,7 +27,7 @@ const routes:RouteConfig[] = [
         showTabBar:true
     },
     {
-        path:'/form',
+        path:'/form/:id?',
         element: <MyForm />,
     },
     {

@@ -37,6 +37,16 @@ const MyForm:FC = () => {
             }
         })
     }
+    const navigateForm = () => {
+        if (isLogin) {
+            navigate('/form')
+        } else {
+            navigate('/login')
+        }
+    }
+    const navigateDetail = (e:number) => {
+        navigate(`/form/${e}`)
+    }
     return <div className="">
         <div className="top flex pt-56 padding-horizontal-24 flex-js-betw">
             <div className="date" onClick={() => {setVisible(true)}}>
@@ -52,11 +62,11 @@ const MyForm:FC = () => {
                 <div className="font-medium">{data.total_expense}</div>
             </div>
         </div>
-        {/* <div className="font-small">新建账单</div> */}
+        <div className="font-small padding-horizontal-18 addBtn" onClick={navigateForm}>新建账单</div>
         {
             data.record.map(item => {
                 return <div className="mb-12">
-                <div className="flex h-30 flex-ai-center flex-js-betw padding-horizontal-18 font-mini">
+                <div className="flex flex-ai-center flex-js-betw padding-horizontal-18 font-mini">
                     <div className="flex flex-ai-center">
                         <div className="mr-8">{item.date}</div>
                         <div>{item.day}</div>
@@ -69,14 +79,17 @@ const MyForm:FC = () => {
                 </div>
                 {
                     item.bills.map(bill => {
-                        return <div className="flex h-30 flex-ai-center flex-js-betw padding-horizontal-24 font-medium-16 border-b-0">
-                            <div className="flex flex-ai-center">
+                        return <div className=" padding-horizontal-24 font-medium-16" onClick={() => {navigateDetail(bill.id)}}>
+                            <div className="flex flex-ai-center flex-js-betw p-vertical-12 border-b-0">
+                                <div className="flex flex-ai-center">
                                 <div className="mr-8">{bill.bill_type}</div>
                                 <div>{bill.title}</div>
+                                </div>
+                                <div>
+                                    {bill.is_income === 0 ? `-${bill.total}` : bill.total}
+                                </div>
                             </div>
-                            <div>
-                                {bill.is_income === 0 ? `-${bill.total}` : bill.total}
-                            </div>
+
                         </div>
                     })
                 }
