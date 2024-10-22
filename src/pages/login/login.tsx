@@ -29,7 +29,7 @@ const Login:React.FC = () => {
 
         })
     }
-    return <MyForm isSHowRegister={true}  onSubmit={submit}/>
+    return <MyForm isRegister={false}  onSubmit={submit}/>
 }
 
 export default Login

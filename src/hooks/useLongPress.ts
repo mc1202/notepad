@@ -3,8 +3,9 @@ import { useRef, useEffect } from 'react';
 const useLongPress = (onLongPress: (id?: number) => void, delay = 500) => {
     const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     const targetRef = useRef<HTMLDivElement | null>(null);
-
+    
     const start = (id?: number) => {
+        
         timeoutRef.current = setTimeout(() => {
             onLongPress(id);
         }, delay);
@@ -21,11 +22,13 @@ const useLongPress = (onLongPress: (id?: number) => void, delay = 500) => {
         if (!element) return;
 
         const handleMouseDown = (e: MouseEvent) => {
+            console.log(111)
             const id = Number((e.currentTarget as HTMLElement).dataset.id);
             start(id || undefined);
         };
 
         const handleTouchStart = (e: TouchEvent) => {
+            console.log(111)
             const id = Number((e.currentTarget as HTMLElement).dataset.id);
             start(id || undefined);
         };

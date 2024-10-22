@@ -16,8 +16,9 @@ const MyForm:React.FC = () => {
     const [outType, setOutType] = useState<arrType[]>([]);
     const [typevisiblees,setVisible] = useState(false)
     const [text,setText] = useState('')
+    const [initialized, setInitialized] = useState(false);
     const [form,setForm] = useState<BillAdd>({
-      bill_type_id:1,
+      bill_type_id:0,
       is_income:1,
       total:0,
       title:'',
@@ -51,16 +52,14 @@ const MyForm:React.FC = () => {
       if (id) {
         getBillDetail({ id }).then(res => {
           if (res.code === 200) {
-            setForm(prevForm => ({
-              ...res.data,
-              bill_type_id: res.data.is_income === 0 ? outType[0]?.value : inType[0]?.value, // 设置初始值
-            }));
+            setForm(res.data);
+            setInitialized(true)
           }
         });
       }
-    }, [id, outType, inType]);
+    }, [outType, inType]);
     useEffect(() => {
-      if (outType.length || inType.length) {
+      if ((outType.length || inType.length) && ((initialized && id) || !id)) {
         setForm(prevForm => ({
           ...prevForm,
           bill_type_id: prevForm.is_income === 0 ? outType[0]?.value : inType[0]?.value,
@@ -72,12 +71,13 @@ const MyForm:React.FC = () => {
       console.log(types,'types')
       if (types.length) {
         console.log(form.bill_type_id)
-        let text = id ? types.find(item => {
+        let text = types.find(item => {
           return item.value == form.bill_type_id
-        })?.label as string : types[0].label
+        })?.label as string
+        // console.log(text)
         setText(text)
       }
-    },[form.bill_type_id,outType,inType])
+    },[form.bill_type_id])
     const setFormData = (type:string,val:unknown) => {
       setForm(prevForm => ({
         ...prevForm,

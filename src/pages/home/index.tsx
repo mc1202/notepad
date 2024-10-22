@@ -23,11 +23,8 @@ const MyForm: FC = () => {
         setDate(getCurrentDate('yyyy-MM', v).split('-'));
     };
     const handleLongPress = (id?: number) => {
-        if (id !== undefined) {
-            alert(`长按事件触发! ID: ${id}`);
-        } else {
-            alert('长按事件触发，但未传递 ID');
-        }
+        console.log(id)
+        
     };
 
     const ref = useLongPress(handleLongPress, 500);
@@ -81,7 +78,7 @@ const MyForm: FC = () => {
             </div>
             <div className="font-small padding-horizontal-18 addBtn" onClick={navigateForm}>新建账单</div>
             {data.record.length === 0 ? (
-                <div className="no-record">没有记录</div>
+                <div className="no-record pt-24">暂无账单</div>
             ) : (
                 data.record.map(item => (
                     <div key={item.date} className="mb-12">

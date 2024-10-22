@@ -22,7 +22,7 @@ import { LoginParams } from '@/api/api'
         })
         // navigate('/form')
     }
-    return <MyForm isSHowRegister={false}  onSubmit={submit}/>
+    return <MyForm isRegister={true}  onSubmit={submit}/>
 }
 
 export default Register
