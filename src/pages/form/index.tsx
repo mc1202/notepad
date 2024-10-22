@@ -46,42 +46,53 @@ const MyForm:React.FC = () => {
             }))
           }
         })
-        if (id) {
-          getBillDetail({id}).then(res => {
-            if (res.code == 200 ) {
-              setForm(res.data)
-            }
-          })
-        }
     },[])
     useEffect(() => {
-      if (outType.length || inType.length) {
-        const obj = JSON.parse(JSON.stringify(form));
-		    obj['bill_type_id'] = form.is_income === 0 ? outType[0]?.value : inType[0]?.value;
-        setForm(obj)
+      if (id) {
+        getBillDetail({ id }).then(res => {
+          if (res.code === 200) {
+            setForm(prevForm => ({
+              ...res.data,
+              bill_type_id: res.data.is_income === 0 ? outType[0]?.value : inType[0]?.value, // 设置初始值
+            }));
+          }
+        });
       }
-    },[form.is_income])
+    }, [id, outType, inType]);
+    useEffect(() => {
+      if (outType.length || inType.length) {
+        setForm(prevForm => ({
+          ...prevForm,
+          bill_type_id: prevForm.is_income === 0 ? outType[0]?.value : inType[0]?.value,
+        }));
+      }
+    },[form.is_income,outType,inType])
     useEffect(() => {
       let types = form.is_income === 0 ? outType : inType
+      console.log(types,'types')
       if (types.length) {
-        setText(types.find(item => {
+        console.log(form.bill_type_id)
+        let text = id ? types.find(item => {
           return item.value == form.bill_type_id
-        })?.label as string)
+        })?.label as string : types[0].label
+        setText(text)
       }
     },[form.bill_type_id,outType,inType])
     const setFormData = (type:string,val:unknown) => {
-      const obj = JSON.parse(JSON.stringify(form));
-		  obj[type] = val;
-		  setForm(obj);
+      setForm(prevForm => ({
+        ...prevForm,
+        [type]: val,
+      }));
     }
 
-    const change = (e:(string | number | null)[]) => {
-      console.log(e)
-      const obj = JSON.parse(JSON.stringify(form));
-		  obj['bill_type_id'] = e[0];
-      setForm(obj);
-      // setVal(e)
-    }
+    type BillTypeIdValues = (string | number | null)[];
+    const change = (values: BillTypeIdValues) => {
+      const selectedBillTypeId = values[0] as number; // 确保类型
+      setForm(prevForm => ({
+        ...prevForm,
+        bill_type_id: selectedBillTypeId,
+      }));
+    };
 
     const save = () => {
       console.log(form.id)
@@ -142,9 +153,7 @@ const MyForm:React.FC = () => {
           setVisible(false)
         }}
         value={[form.bill_type_id]}
-        onConfirm={v => {
-          change(v)
-        }}
+        onConfirm={change}
       />
     </>
 }
