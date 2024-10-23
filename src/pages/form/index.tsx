@@ -18,7 +18,7 @@ const MyForm:React.FC = () => {
     const [text,setText] = useState('')
     const [initialized, setInitialized] = useState(false);
     const [form,setForm] = useState<BillAdd>({
-      bill_type_id:0,
+      bill_type_id:-1,
       is_income:1,
       total:0,
       title:'',
@@ -74,10 +74,10 @@ const MyForm:React.FC = () => {
         let text = types.find(item => {
           return item.value == form.bill_type_id
         })?.label as string
-        // console.log(text)
+        console.log(text)
         setText(text)
       }
-    },[form.bill_type_id])
+    },[form.bill_type_id,outType,inType])
     const setFormData = (type:string,val:unknown) => {
       setForm(prevForm => ({
         ...prevForm,

@@ -1,5 +1,7 @@
 module.exports = {
   plugins: [
+    require('tailwindcss'),
+    require('autoprefixer'),
     require('postcss-px-to-viewport')({
       viewportWidth: 375, // 视口宽度
       viewportHeight: 667, // 可选，视口高度

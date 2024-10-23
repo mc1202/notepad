@@ -22,7 +22,7 @@ const isProduction = process.env.NODE_ENV === 'production';
 module.exports = {
   entry: './src/index.tsx',
   output: {
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, 'build'),
      publicPath: '/',
     filename: isProduction ? '[name].[contenthash].js' : '[name].js',
     clean: true,
@@ -82,25 +82,29 @@ module.exports = {
         ],
       },
       {
-        test: /\.(png|jpe?g|gif|svg)$/, // 处理图片文件
+        test: /\.(png|jpe?g|gif|svg)$/,
         use: [
           {
-            loader: 'file-loader',
+            loader: 'url-loader',
             options: {
+              limit: 8192, // 小于 8kb 的图片转为 Base64
               name: '[path][name].[ext]',
             },
           },
         ],
-      },
+      }
     ],
   },
   optimization: {
-    minimize: true,
+    minimize: isProduction,
     minimizer: [
       new TerserPlugin({
         terserOptions: {
           format: {
             comments: false,
+          },
+          compress: {
+            drop_console: true,
           },
         },
         extractComments: false,
@@ -109,6 +113,8 @@ module.exports = {
     ],
     splitChunks: {
       chunks: 'all',
+      minSize: 20000,
+      maxSize: 40000,
     },
     runtimeChunk: 'single',
     providedExports: true,
@@ -124,6 +130,7 @@ module.exports = {
     }),
     new webpack.DefinePlugin(envKeys),
     new NodePolyfillPlugin(),
+    new CleanWebpackPlugin(),
   ],
   devServer: {
     static: {
