@@ -13,7 +13,10 @@ export interface RouteConfig {
   path: string;
   element: React.ReactNode;
   showTabBar?: boolean;
-  children?:RouteConfig[]
+  children?:RouteConfig[];
+  meta?:{
+    keepAlive:Boolean
+  }
 }
 
 const routes:RouteConfig[] = [
@@ -24,16 +27,25 @@ const routes:RouteConfig[] = [
     {
         path:'/home',
         element: <MyHome />,
-        showTabBar:true
+        showTabBar:true,
+        meta:{
+            keepAlive:true
+        }
     },
     {
         path:'/form/:id?',
         element: <MyForm />,
+        meta:{
+            keepAlive:true
+        }
     },
     {
         path:'/chart',
         element: <MyChart />,
-        showTabBar:true
+        showTabBar:true,
+        meta:{
+            keepAlive:true
+        }
     },
      {
         path:'/mine',

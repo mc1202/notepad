@@ -1,56 +1,55 @@
 import { useRef, useEffect } from 'react';
 
-const useLongPress = (onLongPress: (id?: number) => void, delay = 500) => {
-    const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-    const targetRef = useRef<HTMLDivElement | null>(null);
-    
-    const start = (id?: number) => {
-        
-        timeoutRef.current = setTimeout(() => {
-            onLongPress(id);
-        }, delay);
+const useLongPress = (
+  onLongPress: (dataset?: DOMStringMap) => void,
+  delay = 500
+) => {
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const start = (dataset?: DOMStringMap) => {
+    timeoutRef.current = setTimeout(() => {
+      onLongPress(dataset);
+    }, delay);
+  };
+
+  const clear = () => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+  };
+
+  const setRef = (el: HTMLDivElement | HTMLDivElement[] | null) => {
+    if (Array.isArray(el)) {
+      // 多个元素情况
+      el.forEach(element => {
+        if (element) bindLongPress(element);
+      });
+    } else if (el) {
+      // 单一元素情况
+      bindLongPress(el);
+    }
+  };
+
+  const bindLongPress = (element: HTMLDivElement) => {
+    const handleMouseDown = (e: MouseEvent) => start((e.currentTarget as HTMLElement).dataset);
+    const handleTouchStart = (e: TouchEvent) => start((e.currentTarget as HTMLElement).dataset);
+
+    element.addEventListener('mousedown', handleMouseDown);
+    element.addEventListener('mouseup', clear);
+    element.addEventListener('mouseleave', clear);
+    element.addEventListener('touchstart', handleTouchStart);
+    element.addEventListener('touchend', clear);
+
+    return () => {
+      element.removeEventListener('mousedown', handleMouseDown);
+      element.removeEventListener('mouseup', clear);
+      element.removeEventListener('mouseleave', clear);
+      element.removeEventListener('touchstart', handleTouchStart);
+      element.removeEventListener('touchend', clear);
     };
+  };
 
-    const clear = () => {
-        if (timeoutRef.current) {
-            clearTimeout(timeoutRef.current);
-        }
-    };
-
-    useEffect(() => {
-        const element = targetRef.current;
-        if (!element) return;
-
-        const handleMouseDown = (e: MouseEvent) => {
-            console.log(111)
-            const id = Number((e.currentTarget as HTMLElement).dataset.id);
-            start(id || undefined);
-        };
-
-        const handleTouchStart = (e: TouchEvent) => {
-            console.log(111)
-            const id = Number((e.currentTarget as HTMLElement).dataset.id);
-            start(id || undefined);
-        };
-
-        element.addEventListener('mousedown', handleMouseDown);
-        element.addEventListener('mouseup', clear);
-        element.addEventListener('mouseleave', clear);
-
-        // For touch devices
-        element.addEventListener('touchstart', handleTouchStart);
-        element.addEventListener('touchend', clear);
-
-        return () => {
-            element.removeEventListener('mousedown', handleMouseDown);
-            element.removeEventListener('mouseup', clear);
-            element.removeEventListener('mouseleave', clear);
-            element.removeEventListener('touchstart', handleTouchStart);
-            element.removeEventListener('touchend', clear);
-        };
-    }, [onLongPress, delay]);
-
-    return targetRef;
+  return setRef;
 };
 
 export default useLongPress;

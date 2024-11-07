@@ -8,6 +8,7 @@ const postcssLoader = require('./postcss.config');
 const webpack = require('webpack');
 const dotenv = require('dotenv');
 const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 const env = dotenv.config({ path: `.env.${process.env.NODE_ENV || 'development'}` }).parsed;
 
@@ -97,6 +98,7 @@ module.exports = {
   },
   optimization: {
     minimize: isProduction,
+    concatenateModules: true, 
     minimizer: [
       new TerserPlugin({
         terserOptions: {
@@ -113,9 +115,22 @@ module.exports = {
     ],
     splitChunks: {
       chunks: 'all',
-      minSize: 20000,
-      maxSize: 40000,
-    },
+      minSize: 50000,
+      maxSize: 200000,
+      minChunks: 2,
+      cacheGroups: {
+        reactVendor: {
+          test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
+          name: 'reactVendor',
+          chunks: 'all',
+        },
+        utilityVendor: {
+          test: /[\\/]node_modules[\\/](lodash|moment|axios)[\\/]/,
+          name: 'utilityVendor',
+          chunks: 'all',
+        },
+      },      
+    },    
     runtimeChunk: 'single',
     providedExports: true,
     usedExports: true,
@@ -127,10 +142,12 @@ module.exports = {
     }),
     new MiniCssExtractPlugin({
       filename: isProduction ? '[name].[contenthash].css' : '[name].css',
-    }),
+      chunkFilename: isProduction ? '[name].[contenthash].css' : '[name].css',
+    }),    
     new webpack.DefinePlugin(envKeys),
     new NodePolyfillPlugin(),
     new CleanWebpackPlugin(),
+    new BundleAnalyzerPlugin()
   ],
   devServer: {
     static: {
